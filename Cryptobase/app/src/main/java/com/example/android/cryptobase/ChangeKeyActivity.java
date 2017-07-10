@@ -2,8 +2,8 @@ package com.example.android.cryptobase;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -26,23 +26,23 @@ public class ChangeKeyActivity extends AppCompatActivity {
         newKeyInputBox = (EditText) findViewById(R.id.new_key_input_box);
 
         final Intent returnIntent = getIntent();
-        String defaultKey = returnIntent.getStringExtra("default_key");
-        defaultKeyTextView.setText(defaultKey);
-        changeKeyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String newKey = newKeyInputBox.getText().toString().trim();
-                if(TextUtils.isEmpty(newKey))
-                    Toast.makeText(getApplicationContext(),"Enter a valid key!!",Toast.LENGTH_SHORT).show();
-                else {
-                    returnIntent.putExtra("result",newKey);
-                    setResult(Activity.RESULT_OK,returnIntent);
-                    finish();
+
+            String defaultKey = returnIntent.getStringExtra("default_key");
+            defaultKeyTextView.setText(defaultKey);
+            changeKeyButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String newKey = newKeyInputBox.getText().toString().trim();
+                    if (TextUtils.isEmpty(newKey))
+                        Toast.makeText(getApplicationContext(), "Enter a valid key!!", Toast.LENGTH_SHORT).show();
+                    else {
+                        returnIntent.putExtra("result", newKey);
+                        setResult(Activity.RESULT_OK, returnIntent);
+                        finish();
+                    }
+
                 }
-
-            }
-        });
-
+            });
 
     }
 }

@@ -2,9 +2,11 @@ package com.example.android.cryptobase;
 
 import android.content.Intent;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,12 +25,14 @@ public class SecondaryActivity extends AppCompatActivity {
     TextView keyTextView;
     Button changeKeyButton;
     LinearLayout keyLayout;
+    int keyAForAffine = 5;
+    int keyBForAffine = 8;
 
-    @Override
+    /*@Override
     protected void onResume() {
         keyTextView.setText("Key is: " + oneTimePadKey);
         super.onResume();
-    }
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +61,7 @@ public class SecondaryActivity extends AppCompatActivity {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             Toast.makeText(getApplicationContext(), "Enter a text to be encrpted!!", Toast.LENGTH_SHORT).show();
                         }
-                    encryptedText = ONETIMEPAD(encryptText, oneTimePadKey, 1);
+                    encryptedText = oneTimePad(encryptText, oneTimePadKey, 1);
                     resultTextView.setText(encryptedText);
                     inputBox.getText().clear();
 
@@ -77,7 +81,7 @@ public class SecondaryActivity extends AppCompatActivity {
 
         else if (intent.getIntExtra("source",0) == 2)
         {
-            keyTextView.setVisibility(View.VISIBLE);
+            keyLayout.setVisibility(View.VISIBLE);
             keyTextView.setText("Key is: " + oneTimePadKey);
             inputBox.setHint("Enter the text to be decrypted");
             enterButton.setText("Decrypt");
@@ -89,10 +93,19 @@ public class SecondaryActivity extends AppCompatActivity {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             Toast.makeText(getApplicationContext(), "Enter a text to be decrypted!!", Toast.LENGTH_SHORT).show();
                         }
-                    decryptedText = ONETIMEPAD(encryptText, oneTimePadKey, -1);
+                    decryptedText = oneTimePad(encryptText, oneTimePadKey, -1);
                     resultTextView.setText(decryptedText);
                     inputBox.getText().clear();
 
+                }
+            });
+
+            changeKeyButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(SecondaryActivity.this,ChangeKeyActivity.class);
+                    intent.putExtra("default_key",oneTimePadKey);
+                    startActivityForResult(intent,0);
                 }
             });
 
@@ -139,6 +152,70 @@ public class SecondaryActivity extends AppCompatActivity {
             });
 
         }
+        else if(intent.getIntExtra("source",0) == 5)
+        {
+            keyLayout.setVisibility(View.VISIBLE);
+            keyTextView.setText("Key is: " + oneTimePadKey);
+            keyTextView.setText("Key is: a = " + keyAForAffine + " & b = " + keyBForAffine);
+            enterButton.setText("Encrypt");
+            enterButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String encryptText = inputBox.getText().toString().trim();
+                    if (TextUtils.isEmpty(encryptText))
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            Toast.makeText(getApplicationContext(), "Enter a text to be encrpted!!", Toast.LENGTH_SHORT).show();
+                        }
+                    encryptedText = affineEncrypt(encryptText,keyAForAffine,keyBForAffine);
+                    resultTextView.setText(encryptedText);
+                    inputBox.getText().clear();
+
+                }
+            });
+
+            changeKeyButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(SecondaryActivity.this,ChangeKeyAffine.class);
+                    intent.putExtra("default_key_a",keyAForAffine);
+                    intent.putExtra("default_key_b",keyBForAffine);
+                    startActivityForResult(intent,1);
+                }
+            });
+
+        }
+
+        else if (intent.getIntExtra("source",0) == 6)
+        {
+            keyLayout.setVisibility(View.VISIBLE);
+            keyTextView.setText("Key is: a = " + keyAForAffine + " & b = " + keyBForAffine);
+            inputBox.setHint("Enter the text to be decrypted");
+            enterButton.setText("Decrypt");
+            enterButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String encryptText = inputBox.getText().toString().trim();
+                    if (TextUtils.isEmpty(encryptText))
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            Toast.makeText(getApplicationContext(), "Enter a text to be decrypted!!", Toast.LENGTH_SHORT).show();
+                        }
+                    decryptedText = affineDecrypt(encryptText,keyAForAffine,keyBForAffine);
+                    resultTextView.setText(decryptedText);
+                    inputBox.getText().clear();
+
+                }
+            });
+            changeKeyButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(SecondaryActivity.this,ChangeKeyAffine.class);
+                    intent.putExtra("default_key_a",keyAForAffine);
+                    intent.putExtra("default_key_b",keyBForAffine);
+                    startActivityForResult(intent,1);
+                }
+            });
+
+        }
 
 
     }
@@ -152,11 +229,35 @@ public class SecondaryActivity extends AppCompatActivity {
             if(resultCode == RESULT_OK)
             {
                 oneTimePadKey = data.getStringExtra("result");
+                keyTextView.setText("Key is: " + oneTimePadKey);
             }
 
         }
+        else if(requestCode == 1)
+        {
+            if(resultCode == RESULT_OK)
+            {
+                keyAForAffine = data.getIntExtra("resultKeyA",5);
+                keyBForAffine = data.getIntExtra("resultKeyB",8);
+                keyTextView.setText("Key is: a = " + keyAForAffine + " & b = " + keyBForAffine);
+
+            }
+        }
 
 
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch(item.getItemId())
+        {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     String rot13(String encryptText) {
@@ -189,7 +290,7 @@ public class SecondaryActivity extends AppCompatActivity {
         return new String(resultText);
     }
 
-    String ONETIMEPAD(String text,String key,int o)
+    String oneTimePad(String text, String key, int o)
     {
         int i,lengthOfText,keyLength,j,x,y;
         lengthOfText = text.length();
@@ -222,4 +323,57 @@ public class SecondaryActivity extends AppCompatActivity {
         for( ;num < 0;num += 26){}
         return num;
     }
+
+
+    String affineEncrypt(String inputText,int a,int b)
+    {
+        int lengthOfInput,x;
+        char[] resultArray = new char[inputText.length()];
+        lengthOfInput = inputText.length();
+
+        for(int i = 0;i < lengthOfInput; i++)
+        {
+            x = inputText.charAt(i);
+            if(x >= 65 && x <= 90)
+            {
+                x -= 65;
+                resultArray[i] = (char) ((((a * x) + b) % 26) + 65);
+
+            }
+            else if(x >= 97 && x <= 122)
+            {
+                x -= 97;
+                resultArray[i] = (char) ((((a * x) + b) % 26) + 97);
+            }
+            else resultArray[i] = inputText.charAt(i);
+        }
+    return new String(resultArray);
+    }
+
+    String affineDecrypt(String inputText,int a,int b)
+    {
+        int lengthOfInput,y;
+        char[] resultArray = new char[inputText.length()];
+        lengthOfInput = inputText.length();
+
+        for(int i = 0;i < lengthOfInput; i++)
+        {
+            y = inputText.charAt(i);
+            if(y >= 65 && y <= 90)
+            {
+                y -= 65;
+                resultArray[i] = (char) (pos((((26 - a) * (y - b)) % 26)) + 65);
+            }
+            else if(y >= 97 && y <= 122)
+            {
+                y -= 97;
+                resultArray[i] = (char) (pos((((26 - a) * (y - b)) % 26)) + 97);
+            }
+            else resultArray[i] = inputText.charAt(i);
+        }
+
+        return new String(resultArray);
+    }
+
+
 }

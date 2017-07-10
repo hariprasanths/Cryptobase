@@ -20,12 +20,14 @@ public class CustomFragmentPagerAdapter extends FragmentPagerAdapter {
             return new Rot13Fragment();
         else if (position == 1)
             return new OneTimePadFragment();
+        else if (position == 2)
+            return new AffineFragment();
         return null;
     }
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 
     @Override
@@ -34,6 +36,8 @@ public class CustomFragmentPagerAdapter extends FragmentPagerAdapter {
             return "ROT13";
         else if (position == 1)
             return "One Time Pad";
+        else if (position == 2)
+            return "Affine";
 
         return super.getPageTitle(position);
     }

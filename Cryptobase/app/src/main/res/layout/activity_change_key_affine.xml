@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/default_key_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/new_key_a_input_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter the new key value for a"
+        android:inputType="number"/>
+
+    <EditText
+        android:id="@+id/new_key_b_input_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter the new key value for b"
+        android:inputType="number"/>
+
+    <Button
+        android:id="@+id/set_key_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set" />
+
+</LinearLayout>
