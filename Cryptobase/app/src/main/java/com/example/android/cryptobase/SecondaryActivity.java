@@ -1,5 +1,7 @@
 package com.example.android.cryptobase;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,6 +29,8 @@ public class SecondaryActivity extends AppCompatActivity {
     LinearLayout keyLayout;
     int keyAForAffine = 5;
     int keyBForAffine = 8;
+    LinearLayout optionsLayout;
+    Button copyButton;
 
     /*@Override
     protected void onResume() {
@@ -44,7 +48,13 @@ public class SecondaryActivity extends AppCompatActivity {
         keyTextView = (TextView) findViewById(R.id.key_textview);
         changeKeyButton = (Button) findViewById(R.id.change_key_button);
         keyLayout = (LinearLayout) findViewById(R.id.key_layout);
+        optionsLayout = (LinearLayout) findViewById(R.id.options_layout);
+        copyButton = (Button) findViewById(R.id.copy_button);
+        optionsLayout.setVisibility(View.INVISIBLE);
         keyLayout.setVisibility(View.INVISIBLE);
+
+        encryptedText = "";
+        decryptedText = "";
 
         Intent intent = getIntent();
         if(intent.getIntExtra("source",0) == 1)
@@ -64,7 +74,17 @@ public class SecondaryActivity extends AppCompatActivity {
                     encryptedText = oneTimePad(encryptText, oneTimePadKey, 1);
                     resultTextView.setText(encryptedText);
                     inputBox.getText().clear();
+                    optionsLayout.setVisibility(View.VISIBLE);
 
+                }
+            });
+
+            copyButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                    ClipData clipData = ClipData.newPlainText("label",encryptedText);
+                    clipboardManager.setPrimaryClip(clipData);
                 }
             });
 
