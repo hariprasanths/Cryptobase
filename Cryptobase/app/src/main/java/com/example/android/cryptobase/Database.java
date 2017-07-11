@@ -1,31 +1,34 @@
 package com.example.android.cryptobase;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.util.ArrayList;
+import com.example.android.cryptobase.data.PassDataContract;
+import com.example.android.cryptobase.data.PassDataContract.PassDataEntry;
+import com.example.android.cryptobase.data.PassDataCursorAdapter;
 
-public class Database extends AppCompatActivity {
+public class Database extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
     ListView listView;
     FloatingActionButton fab;
-    ArrayList<PassData> passDatas;
-    int index = 0;
-    CustomAdapter adapter;
+    PassDataCursorAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_database);
         listView = (ListView) findViewById(R.id.list_view);
-        passDatas = new ArrayList<>();
 
-        adapter = new CustomAdapter(getApplicationContext(),passDatas);
+        adapter = new PassDataCursorAdapter(this,null);
         listView.setAdapter(adapter);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -33,34 +36,47 @@ public class Database extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Database.this,NewEntryActivity.class);
-                startActivityForResult(intent,0);
+                startActivity(intent);
 
             }
         });
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                PassData currentData = adapter.getItem(position);
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-            }
+                    }
         });
 
+        getSupportLoaderManager().initLoader(0,null,this);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == 0)
-        {
-            if(resultCode == RESULT_OK)
-            {
-                String userName = data.getStringExtra("username");
-                String passWord = data.getStringExtra("password");
-                passDatas.add(index,new PassData(userName,passWord));
-                index ++;
-                adapter.notifyDataSetChanged();
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
+        String[] projection = {
+                PassDataEntry._ID,
+                PassDataEntry.COLUMN_USERNAME,
+                PassDataEntry.COLUMN_PASSWORD};
+
+
+        return new CursorLoader(this,
+                PassDataContract.CONTENT_URI,
+                projection,
+                null,
+                null,
+                null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+
+        adapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+        adapter.swapCursor(null);
     }
 }
