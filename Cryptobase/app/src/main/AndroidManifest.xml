@@ -21,8 +21,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity android:name=".ChangeKeyActivity"></activity>
-        <activity android:name=".ChangeKeyAffine"></activity>
+        <activity android:name=".ChangeKeyActivity" />
+        <activity android:name=".ChangeKeyAffine" />
+        <activity android:name=".Database" />
+        <activity android:name=".NewEntryActivity"></activity>
     </application>
 
 </manifest>
