@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:paddingTop="24dp"
     tools:context="com.example.android.cryptobase.SecondaryActivity">
 
     <LinearLayout
@@ -16,13 +17,24 @@
         android:id="@+id/key_textview"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        style="@style/TextViewKeyStyle"/>
         <Button
             android:text="Change Key"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/change_key_button"/>
 </LinearLayout>
+
+    <TextView
+        android:id="@+id/heading_text_view"
+        style="@style/TextViewHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:layout_marginTop="32dp"
+        android:gravity="center"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -32,10 +44,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Enter text to be encrypted"
+            android:hint="Enter here"
             android:inputType="text|textMultiLine"
             android:scrollHorizontally="false"
-            tools:text="Hello World!" />
+            style="@style/InputTextStyle" />
 
         <Button
             android:id="@+id/enter_button"
@@ -47,7 +59,10 @@
     <TextView
         android:id="@+id/result_textview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"
+        style="@style/InputTextStyle"/>
 
     <LinearLayout
         android:id="@+id/options_layout"

@@ -9,26 +9,27 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Enter Username/Email: "/>
+        android:text="Enter Username/Email "
+        style="@style/TextViewHeading"/>
 
     <EditText
         android:id="@+id/username_inpubox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Username"/>
+        android:hint="Username"
+        style="@style/InputTextStyle"/>
+
     <TextView
+        android:id="@+id/textView"
+        style="@style/TextViewHeading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Enter Password: "/>
+        android:text="Enter Password " />
 
     <EditText
         android:id="@+id/password_inputbox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Password"/>
-    <Button
-        android:id="@+id/set_passdata_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Set"/>
+        android:hint="Password"
+        style="@style/InputTextStyle"/>
 </LinearLayout>

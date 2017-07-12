@@ -13,19 +13,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Username/Email: "
-        />
+        android:padding="8dp"
+        style="@style/TextAppearance.AppCompat.Light.SearchResult.Title"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/username_textview"/>
-    <TextView
+        android:id="@+id/username_textview"
+        android:paddingLeft="16dp"
+        style="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"/>
+
+        <TextView
+            android:id="@+id/textView2"
+            style="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="Password:" />
+
+        <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Password:"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/password_textview"/>
+        android:id="@+id/password_textview"
+        android:paddingLeft="16dp"
+        style="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
+        android:paddingBottom="8dp"/>
 </LinearLayout>
 
 </LinearLayout>

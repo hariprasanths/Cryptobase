@@ -28,7 +28,7 @@ public class ChangeKeyActivity extends AppCompatActivity {
         final Intent returnIntent = getIntent();
 
             String defaultKey = returnIntent.getStringExtra("default_key");
-            defaultKeyTextView.setText(defaultKey);
+            defaultKeyTextView.setText("Current Key is " + "'" + defaultKey + "'");
             changeKeyButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

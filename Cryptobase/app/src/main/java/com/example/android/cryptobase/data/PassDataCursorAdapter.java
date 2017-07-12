@@ -32,8 +32,8 @@ public class PassDataCursorAdapter extends CursorAdapter {
         TextView usernameTextView = (TextView) view.findViewById(R.id.username_textview);
         TextView passwordTextView = (TextView) view.findViewById(R.id.password_textview);
 
-        int usernameColumnIndex = cursor.getColumnIndex("username");
-        int passwordColumnIndex = cursor.getColumnIndex("password");
+        int usernameColumnIndex = cursor.getColumnIndex(PassDataContract.PassDataEntry.COLUMN_USERNAME);
+        int passwordColumnIndex = cursor.getColumnIndex(PassDataContract.PassDataEntry.COLUMN_PASSWORD);
 
         String username = cursor.getString(usernameColumnIndex);
         String password = cursor.getString(passwordColumnIndex);

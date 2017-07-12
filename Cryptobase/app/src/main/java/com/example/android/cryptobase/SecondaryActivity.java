@@ -32,6 +32,7 @@ public class SecondaryActivity extends AppCompatActivity {
     LinearLayout optionsLayout;
     Button copyButton;
     int viewPagerPosition;
+    TextView headingTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,8 @@ public class SecondaryActivity extends AppCompatActivity {
         keyLayout = (LinearLayout) findViewById(R.id.key_layout);
         optionsLayout = (LinearLayout) findViewById(R.id.options_layout);
         copyButton = (Button) findViewById(R.id.copy_button);
+        headingTextView = (TextView) findViewById(R.id.heading_text_view);
+
         optionsLayout.setVisibility(View.INVISIBLE);
         keyLayout.setVisibility(View.INVISIBLE);
 
@@ -55,10 +58,11 @@ public class SecondaryActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if(intent.getIntExtra("source",0) == 1)
         {
+            setTitle("One Time Pad Encryption");
             viewPagerPosition = 1;
             keyLayout.setVisibility(View.VISIBLE);
-            keyTextView.setText("Key is: " + oneTimePadKey);
-            inputBox.setHint("Enter the text to be encrypted");
+            keyTextView.setText("Key - " + oneTimePadKey);
+            headingTextView.setText("Enter text to Encrypt");
             enterButton.setText("Encrypt");
             enterButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -82,6 +86,7 @@ public class SecondaryActivity extends AppCompatActivity {
                     ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
                     ClipData clipData = ClipData.newPlainText("label",encryptedText);
                     clipboardManager.setPrimaryClip(clipData);
+                    Toast.makeText(getApplicationContext(),"Encrypted text copied to clipboard!",Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -98,10 +103,11 @@ public class SecondaryActivity extends AppCompatActivity {
 
         else if (intent.getIntExtra("source",0) == 2)
         {
+            setTitle("One Time Pad Decryption");
             viewPagerPosition = 1;
             keyLayout.setVisibility(View.VISIBLE);
-            keyTextView.setText("Key is: " + oneTimePadKey);
-            inputBox.setHint("Enter the text to be decrypted");
+            keyTextView.setText("Key - " + oneTimePadKey);
+            headingTextView.setText("Enter text to Decrypt");
             enterButton.setText("Decrypt");
             enterButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -131,8 +137,9 @@ public class SecondaryActivity extends AppCompatActivity {
 
         else if(intent.getIntExtra("source",0) == 3)
         {
+            setTitle("ROT13 Encryption");
             viewPagerPosition = 0;
-            inputBox.setHint("Enter the text to be encrypted");
+            headingTextView.setText("Enter text to Encrypt");
             enterButton.setText("Encrypt");
             enterButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -156,6 +163,7 @@ public class SecondaryActivity extends AppCompatActivity {
                     ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
                     ClipData clipData = ClipData.newPlainText("label",encryptedText);
                     clipboardManager.setPrimaryClip(clipData);
+                    Toast.makeText(getApplicationContext(),"Encrypted text copied to clipboard!",Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -163,8 +171,9 @@ public class SecondaryActivity extends AppCompatActivity {
 
         else if (intent.getIntExtra("source",0) == 4)
         {
+            setTitle("ROT 13 Decryption");
             viewPagerPosition = 0;
-            inputBox.setHint("Enter the text to be decrypted");
+            headingTextView.setText("Enter text to Decrypt");
             enterButton.setText("Decrypt");
             enterButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -184,9 +193,11 @@ public class SecondaryActivity extends AppCompatActivity {
         }
         else if(intent.getIntExtra("source",0) == 5)
         {
+            setTitle("Affine Encryption");
             viewPagerPosition = 2;
             keyLayout.setVisibility(View.VISIBLE);
-            keyTextView.setText("Key is: a = " + keyAForAffine + " & b = " + keyBForAffine);
+            headingTextView.setText("Enter text to Encrypt");
+            keyTextView.setText("Key is:a=" + keyAForAffine + " & b=" + keyBForAffine);
             enterButton.setText("Encrypt");
             enterButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -209,6 +220,7 @@ public class SecondaryActivity extends AppCompatActivity {
                     ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
                     ClipData clipData = ClipData.newPlainText("label",encryptedText);
                     clipboardManager.setPrimaryClip(clipData);
+                    Toast.makeText(getApplicationContext(),"Encrypted text copied to clipboard!",Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -226,10 +238,11 @@ public class SecondaryActivity extends AppCompatActivity {
 
         else if (intent.getIntExtra("source",0) == 6)
         {
+            setTitle("Affine Decryption");
             viewPagerPosition = 2;
             keyLayout.setVisibility(View.VISIBLE);
-            keyTextView.setText("Key is: a = " + keyAForAffine + " & b = " + keyBForAffine);
-            inputBox.setHint("Enter the text to be decrypted");
+            keyTextView.setText("Key is:a=" + keyAForAffine + " & b=" + keyBForAffine);
+            headingTextView.setText("Enter text to Decrypt");
             enterButton.setText("Decrypt");
             enterButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -269,7 +282,7 @@ public class SecondaryActivity extends AppCompatActivity {
             if(resultCode == RESULT_OK)
             {
                 oneTimePadKey = data.getStringExtra("result");
-                keyTextView.setText("Key is: " + oneTimePadKey);
+                keyTextView.setText("Key - " + oneTimePadKey);
             }
 
         }
@@ -279,12 +292,10 @@ public class SecondaryActivity extends AppCompatActivity {
             {
                 keyAForAffine = data.getIntExtra("resultKeyA",5);
                 keyBForAffine = data.getIntExtra("resultKeyB",8);
-                keyTextView.setText("Key is: a = " + keyAForAffine + " & b = " + keyBForAffine);
+                keyTextView.setText("Key is:a=" + keyAForAffine + " & b=" + keyBForAffine);
 
             }
         }
-
-
     }
 
 

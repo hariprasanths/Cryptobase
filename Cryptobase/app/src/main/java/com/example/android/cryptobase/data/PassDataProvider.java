@@ -90,6 +90,7 @@ public class PassDataProvider extends ContentProvider {
                 throw new IllegalArgumentException();
 
     }
+    getContext().getContentResolver().notifyChange(uri,null);
         return ContentUris.withAppendedId(uri, rowId);
     }
 

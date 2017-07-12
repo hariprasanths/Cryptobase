@@ -1,21 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="24dp">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/default_key_text_view"/>
-    <EditText
+        android:id="@+id/default_key_text_view"
+        style="@style/TextViewKeyStyle"
+        android:layout_marginBottom="32dp"/>
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="20dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="New Key is"
+            style="@style/TextViewKeyStyle"/>
+
+    <EditText
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:id="@+id/new_key_input_box"
-        android:hint="Enter the new key"/>
+        android:layout_weight="1"
+        android:hint="Enter here"
+        style="@style/TextViewKeyStyle"
+        android:maxLength="10"
+        android:maxLines="1"/>
+    </LinearLayout>
+    </LinearLayout>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/set_key_button"
-        android:text="Set"/>
+        android:text="Set"
+        android:layout_centerInParent="true"/>
 
-</LinearLayout>
+
+
+</RelativeLayout>

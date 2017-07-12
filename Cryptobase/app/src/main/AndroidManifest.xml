@@ -24,7 +24,11 @@
         <activity android:name=".ChangeKeyActivity" />
         <activity android:name=".ChangeKeyAffine" />
         <activity android:name=".Database" />
-        <activity android:name=".NewEntryActivity"></activity>
+        <activity android:name=".NewEntryActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Database" />
+        </activity>
 
         <provider
             android:name=".data.PassDataProvider"
