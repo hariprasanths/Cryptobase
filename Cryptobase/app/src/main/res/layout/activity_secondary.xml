@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingTop="24dp"
     tools:context="com.example.android.cryptobase.SecondaryActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="24dp">
 
     <LinearLayout
         android:id="@+id/key_layout"
@@ -57,6 +60,15 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/result_heading_textview"
+        style="@style/TextViewHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:layout_marginTop="32dp"
+        android:gravity="center" />
+
+    <TextView
         android:id="@+id/result_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -67,11 +79,24 @@
     <LinearLayout
         android:id="@+id/options_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <Button
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="48dp">
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Copy"
-            android:id="@+id/copy_button"/>
+            android:background="@drawable/content_copy_black_36x36"
+            android:id="@+id/copy_button"
+            android:layout_marginLeft="48dp"/>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Share"
+            android:background="@drawable/share_black_36x36"
+            android:id="@+id/share_button"
+            android:layout_marginLeft="48dp"/>
+
     </LinearLayout>
-</LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,9 +31,11 @@ public class SecondaryActivity extends AppCompatActivity {
     int keyAForAffine = 5;
     int keyBForAffine = 8;
     LinearLayout optionsLayout;
-    Button copyButton;
+    ImageButton copyButton;
     int viewPagerPosition;
     TextView headingTextView;
+    TextView resultHeadingTextView;
+    ImageButton shareButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +48,10 @@ public class SecondaryActivity extends AppCompatActivity {
         changeKeyButton = (Button) findViewById(R.id.change_key_button);
         keyLayout = (LinearLayout) findViewById(R.id.key_layout);
         optionsLayout = (LinearLayout) findViewById(R.id.options_layout);
-        copyButton = (Button) findViewById(R.id.copy_button);
+        copyButton = (ImageButton) findViewById(R.id.copy_button);
         headingTextView = (TextView) findViewById(R.id.heading_text_view);
+        resultHeadingTextView = (TextView) findViewById(R.id.result_heading_textview);
+        shareButton = (ImageButton) findViewById(R.id.share_button);
 
         optionsLayout.setVisibility(View.INVISIBLE);
         keyLayout.setVisibility(View.INVISIBLE);
@@ -56,8 +61,7 @@ public class SecondaryActivity extends AppCompatActivity {
         viewPagerPosition = 0;
 
         Intent intent = getIntent();
-        if(intent.getIntExtra("source",0) == 1)
-        {
+        if (intent.getIntExtra("source", 0) == 1) {
             setTitle("One Time Pad Encryption");
             viewPagerPosition = 1;
             keyLayout.setVisibility(View.VISIBLE);
@@ -73,6 +77,7 @@ public class SecondaryActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Enter a text to be encrpted!!", Toast.LENGTH_SHORT).show();
                         }
                     encryptedText = oneTimePad(encryptText, oneTimePadKey, 1);
+                    resultHeadingTextView.setText("The encrypted text is ");
                     resultTextView.setText(encryptedText);
                     inputBox.getText().clear();
                     optionsLayout.setVisibility(View.VISIBLE);
@@ -80,29 +85,17 @@ public class SecondaryActivity extends AppCompatActivity {
                 }
             });
 
-            copyButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                    ClipData clipData = ClipData.newPlainText("label",encryptedText);
-                    clipboardManager.setPrimaryClip(clipData);
-                    Toast.makeText(getApplicationContext(),"Encrypted text copied to clipboard!",Toast.LENGTH_SHORT).show();
-                }
-            });
 
             changeKeyButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(SecondaryActivity.this,ChangeKeyActivity.class);
-                    intent.putExtra("default_key",oneTimePadKey);
-                    startActivityForResult(intent,0);
+                    Intent intent = new Intent(SecondaryActivity.this, ChangeKeyActivity.class);
+                    intent.putExtra("default_key", oneTimePadKey);
+                    startActivityForResult(intent, 0);
                 }
             });
 
-        }
-
-        else if (intent.getIntExtra("source",0) == 2)
-        {
+        } else if (intent.getIntExtra("source", 0) == 2) {
             setTitle("One Time Pad Decryption");
             viewPagerPosition = 1;
             keyLayout.setVisibility(View.VISIBLE);
@@ -118,6 +111,7 @@ public class SecondaryActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Enter a text to be decrypted!!", Toast.LENGTH_SHORT).show();
                         }
                     decryptedText = oneTimePad(encryptText, oneTimePadKey, -1);
+                    resultHeadingTextView.setText("The decrypted text is ");
                     resultTextView.setText(decryptedText);
                     inputBox.getText().clear();
 
@@ -127,16 +121,13 @@ public class SecondaryActivity extends AppCompatActivity {
             changeKeyButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(SecondaryActivity.this,ChangeKeyActivity.class);
-                    intent.putExtra("default_key",oneTimePadKey);
-                    startActivityForResult(intent,0);
+                    Intent intent = new Intent(SecondaryActivity.this, ChangeKeyActivity.class);
+                    intent.putExtra("default_key", oneTimePadKey);
+                    startActivityForResult(intent, 0);
                 }
             });
 
-        }
-
-        else if(intent.getIntExtra("source",0) == 3)
-        {
+        } else if (intent.getIntExtra("source", 0) == 3) {
             setTitle("ROT13 Encryption");
             viewPagerPosition = 0;
             headingTextView.setText("Enter text to Encrypt");
@@ -150,27 +141,16 @@ public class SecondaryActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Enter a text to be encrpted!!", Toast.LENGTH_SHORT).show();
                         }
                     encryptedText = rot13(encryptText);
+                    resultHeadingTextView.setText("The encrypted text is");
                     resultTextView.setText(encryptedText);
                     inputBox.getText().clear();
                     optionsLayout.setVisibility(View.VISIBLE);
 
                 }
             });
+            
 
-            copyButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                    ClipData clipData = ClipData.newPlainText("label",encryptedText);
-                    clipboardManager.setPrimaryClip(clipData);
-                    Toast.makeText(getApplicationContext(),"Encrypted text copied to clipboard!",Toast.LENGTH_SHORT).show();
-                }
-            });
-
-        }
-
-        else if (intent.getIntExtra("source",0) == 4)
-        {
+        } else if (intent.getIntExtra("source", 0) == 4) {
             setTitle("ROT 13 Decryption");
             viewPagerPosition = 0;
             headingTextView.setText("Enter text to Decrypt");
@@ -184,15 +164,14 @@ public class SecondaryActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Enter a text to be decrypted!!", Toast.LENGTH_SHORT).show();
                         }
                     decryptedText = rot13(encryptText);
+                    resultHeadingTextView.setText("The decrypted text is");
                     resultTextView.setText(decryptedText);
                     inputBox.getText().clear();
 
                 }
             });
 
-        }
-        else if(intent.getIntExtra("source",0) == 5)
-        {
+        } else if (intent.getIntExtra("source", 0) == 5) {
             setTitle("Affine Encryption");
             viewPagerPosition = 2;
             keyLayout.setVisibility(View.VISIBLE);
@@ -207,37 +186,27 @@ public class SecondaryActivity extends AppCompatActivity {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             Toast.makeText(getApplicationContext(), "Enter a text to be encrpted!!", Toast.LENGTH_SHORT).show();
                         }
-                    encryptedText = affineEncrypt(encryptText,keyAForAffine,keyBForAffine);
+                    encryptedText = affineEncrypt(encryptText, keyAForAffine, keyBForAffine);
+                    resultHeadingTextView.setText("The encrypted text is ");
                     resultTextView.setText(encryptedText);
                     inputBox.getText().clear();
                     optionsLayout.setVisibility(View.VISIBLE);
 
                 }
             });
-            copyButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                    ClipData clipData = ClipData.newPlainText("label",encryptedText);
-                    clipboardManager.setPrimaryClip(clipData);
-                    Toast.makeText(getApplicationContext(),"Encrypted text copied to clipboard!",Toast.LENGTH_SHORT).show();
-                }
-            });
+
 
             changeKeyButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(SecondaryActivity.this,ChangeKeyAffine.class);
-                    intent.putExtra("default_key_a",keyAForAffine);
-                    intent.putExtra("default_key_b",keyBForAffine);
-                    startActivityForResult(intent,1);
+                    Intent intent = new Intent(SecondaryActivity.this, ChangeKeyAffine.class);
+                    intent.putExtra("default_key_a", keyAForAffine);
+                    intent.putExtra("default_key_b", keyBForAffine);
+                    startActivityForResult(intent, 1);
                 }
             });
 
-        }
-
-        else if (intent.getIntExtra("source",0) == 6)
-        {
+        } else if (intent.getIntExtra("source", 0) == 6) {
             setTitle("Affine Decryption");
             viewPagerPosition = 2;
             keyLayout.setVisibility(View.VISIBLE);
@@ -252,7 +221,8 @@ public class SecondaryActivity extends AppCompatActivity {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             Toast.makeText(getApplicationContext(), "Enter a text to be decrypted!!", Toast.LENGTH_SHORT).show();
                         }
-                    decryptedText = affineDecrypt(encryptText,keyAForAffine,keyBForAffine);
+                    decryptedText = affineDecrypt(encryptText, keyAForAffine, keyBForAffine);
+                    resultHeadingTextView.setText("The decrypted text is ");
                     resultTextView.setText(decryptedText);
                     inputBox.getText().clear();
 
@@ -261,15 +231,33 @@ public class SecondaryActivity extends AppCompatActivity {
             changeKeyButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(SecondaryActivity.this,ChangeKeyAffine.class);
-                    intent.putExtra("default_key_a",keyAForAffine);
-                    intent.putExtra("default_key_b",keyBForAffine);
-                    startActivityForResult(intent,1);
+                    Intent intent = new Intent(SecondaryActivity.this, ChangeKeyAffine.class);
+                    intent.putExtra("default_key_a", keyAForAffine);
+                    intent.putExtra("default_key_b", keyBForAffine);
+                    startActivityForResult(intent, 1);
                 }
             });
-
         }
 
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_TEXT,encryptedText);
+                startActivity(shareIntent);
+            }
+        });
+
+        copyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                ClipData clipData = ClipData.newPlainText("label", encryptedText);
+                clipboardManager.setPrimaryClip(clipData);
+                Toast.makeText(getApplicationContext(), "Encrypted text copied to clipboard!", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
