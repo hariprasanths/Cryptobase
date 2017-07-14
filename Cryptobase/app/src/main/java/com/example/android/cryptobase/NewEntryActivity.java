@@ -1,14 +1,14 @@
 package com.example.android.cryptobase;
 
+import android.app.LoaderManager;
 import android.content.ContentValues;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
 import android.support.v4.app.NavUtils;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.example.android.cryptobase.data.PassDataContract;
 import com.example.android.cryptobase.data.PassDataContract.PassDataEntry;
 
-public class NewEntryActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+public class NewEntryActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     EditText userNameInputBox;
     EditText passWordInputBox;
@@ -35,16 +35,12 @@ public class NewEntryActivity extends AppCompatActivity implements LoaderManager
         final Intent intent = getIntent();
         currentUri = intent.getData();
 
-        if(currentUri == null)
-        {
+        if (currentUri == null) {
             setTitle("Add data");
             invalidateOptionsMenu();
-        }
-
-        else
-        {
+        } else {
             setTitle("Edit data");
-            getSupportLoaderManager().initLoader(0,null,this);
+            getLoaderManager().initLoader(0, null, this);
         }
 
     }
@@ -52,13 +48,13 @@ public class NewEntryActivity extends AppCompatActivity implements LoaderManager
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.menu_new_entry,menu);
+        getMenuInflater().inflate(R.menu.menu_new_entry, menu);
         return true;
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        if(currentUri == null) {
+        if (currentUri == null) {
             MenuItem menuItem = menu.findItem(R.id.delete_menu_button);
             menuItem.setVisible(false);
         }
@@ -67,8 +63,7 @@ public class NewEntryActivity extends AppCompatActivity implements LoaderManager
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId())
-        {
+        switch (item.getItemId()) {
             case R.id.set_data_menu_button:
 
                 String userName = userNameInputBox.getText().toString().trim();
@@ -80,17 +75,16 @@ public class NewEntryActivity extends AppCompatActivity implements LoaderManager
                     ContentValues values = new ContentValues();
                     values.put(PassDataEntry.COLUMN_USERNAME, userName);
                     values.put(PassDataEntry.COLUMN_PASSWORD, passWord);
-                    if(currentUri == null)
-                    {
+                    if (currentUri == null) {
                         getContentResolver().insert(PassDataContract.CONTENT_URI, values);
-                    }else  {
-                        getContentResolver().update(currentUri,values,null,null);
+                    } else {
+                        getContentResolver().update(currentUri, values, null, null);
                     }
                     finish();
                 }
                 break;
             case R.id.delete_menu_button:
-                int rowsDeleted = getContentResolver().delete(currentUri,null,null);
+                getContentResolver().delete(currentUri, null, null);
                 finish();
                 break;
             case android.R.id.home:
@@ -110,19 +104,20 @@ public class NewEntryActivity extends AppCompatActivity implements LoaderManager
 
 
         return new CursorLoader(this,
-                PassDataContract.CONTENT_URI,
+                currentUri,
                 projection,
                 null,
                 null,
                 null);
+
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
-        if(data.getCount() < 1 || data == null)
+        if (data.getCount() < 1 || data == null)
             return;
-        else if(data.moveToFirst()){
+        else if (data.moveToFirst()) {
 
             int usernameColumnIndex = data.getColumnIndex(PassDataEntry.COLUMN_USERNAME);
             int passwordColumnIndex = data.getColumnIndex(PassDataEntry.COLUMN_PASSWORD);

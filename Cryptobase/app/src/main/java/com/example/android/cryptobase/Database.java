@@ -37,8 +37,7 @@ public class Database extends AppCompatActivity implements LoaderManager.LoaderC
 
         adapter = new PassDataCursorAdapter(this,null);
         listView.setAdapter(adapter);
-         if (adapter.getCount() == 0)
-             invalidateOptionsMenu();
+        invalidateOptionsMenu();
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,6 +69,14 @@ public class Database extends AppCompatActivity implements LoaderManager.LoaderC
          return true;
      }
 
+     @Override
+     public boolean onPrepareOptionsMenu(Menu menu) {
+         MenuItem menuItem = menu.findItem(R.id.delete_all_menu_button);
+         if(adapter.getCount() == 0)
+             menuItem.setVisible(false);
+         else menuItem.setVisible(true);
+         return true;
+     }
 
      @Override
      public boolean onOptionsItemSelected(MenuItem item) {
@@ -102,6 +109,7 @@ public class Database extends AppCompatActivity implements LoaderManager.LoaderC
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         adapter.swapCursor(data);
+        invalidateOptionsMenu();
     }
 
     @Override
