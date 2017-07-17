@@ -36,6 +36,7 @@ public class SecondaryActivity extends AppCompatActivity {
     TextView headingTextView;
     TextView resultHeadingTextView;
     ImageButton shareButton;
+    ImageButton useAsPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,8 @@ public class SecondaryActivity extends AppCompatActivity {
         headingTextView = (TextView) findViewById(R.id.heading_text_view);
         resultHeadingTextView = (TextView) findViewById(R.id.result_heading_textview);
         shareButton = (ImageButton) findViewById(R.id.share_button);
+        useAsPassword = (ImageButton) findViewById(R.id.use_as_password_button);
+
 
         optionsLayout.setVisibility(View.INVISIBLE);
         keyLayout.setVisibility(View.INVISIBLE);
@@ -148,7 +151,7 @@ public class SecondaryActivity extends AppCompatActivity {
 
                 }
             });
-            
+
 
         } else if (intent.getIntExtra("source", 0) == 4) {
             setTitle("ROT 13 Decryption");
@@ -256,6 +259,15 @@ public class SecondaryActivity extends AppCompatActivity {
                 ClipData clipData = ClipData.newPlainText("label", encryptedText);
                 clipboardManager.setPrimaryClip(clipData);
                 Toast.makeText(getApplicationContext(), "Encrypted text copied to clipboard!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        useAsPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              Intent intent = new Intent(SecondaryActivity.this,NewEntryActivity.class);
+                intent.putExtra("password_text",encryptedText);
+                startActivity(intent);
             }
         });
 

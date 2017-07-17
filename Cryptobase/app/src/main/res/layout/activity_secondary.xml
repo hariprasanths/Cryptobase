@@ -95,6 +95,13 @@
             android:background="@drawable/share_black_36x36"
             android:id="@+id/share_button"
             android:layout_marginLeft="48dp"/>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SetAsPassword"
+            android:background="@drawable/share_black_36x36"
+            android:id="@+id/use_as_password_button"
+            android:layout_marginLeft="48dp"/>
 
     </LinearLayout>
 

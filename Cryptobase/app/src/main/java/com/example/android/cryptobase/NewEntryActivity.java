@@ -24,6 +24,7 @@ public class NewEntryActivity extends AppCompatActivity implements LoaderManager
     EditText userNameInputBox;
     EditText passWordInputBox;
     Uri currentUri;
+    String passwordText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +35,21 @@ public class NewEntryActivity extends AppCompatActivity implements LoaderManager
 
         final Intent intent = getIntent();
         currentUri = intent.getData();
+        if(intent.hasExtra("password_text"))
+        passwordText = intent.getStringExtra("password_text");
+        else passwordText = "";
 
-        if (currentUri == null) {
+        if (currentUri == null && passwordText.isEmpty()) {
             setTitle("Add data");
             invalidateOptionsMenu();
-        } else {
+        }else if(currentUri == null && !passwordText.isEmpty())
+        {
+            setTitle("Add data");
+            invalidateOptionsMenu();
+            passWordInputBox.setText(passwordText);
+        }
+
+        else {
             setTitle("Edit data");
             getLoaderManager().initLoader(0, null, this);
         }
