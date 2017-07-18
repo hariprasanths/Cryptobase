@@ -33,6 +33,8 @@ public class PassDataContract {
 
         public static final String COLUMN_PASSWORD = "password";
 
+        public static final String COLUMN_PASSWORD_QRCODE = "qrcode";
+
         public static final String CONTENT_LIST_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" +
                 CONTENT_AUTHORITY + "/" + PATH;
 

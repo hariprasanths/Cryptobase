@@ -86,6 +86,7 @@ public class NewEntryActivity extends AppCompatActivity implements LoaderManager
                     ContentValues values = new ContentValues();
                     values.put(PassDataEntry.COLUMN_USERNAME, userName);
                     values.put(PassDataEntry.COLUMN_PASSWORD, passWord);
+
                     if (currentUri == null) {
                         getContentResolver().insert(PassDataContract.CONTENT_URI, values);
                     } else {
@@ -147,4 +148,5 @@ public class NewEntryActivity extends AppCompatActivity implements LoaderManager
         userNameInputBox.setText("");
         passWordInputBox.setText("");
     }
+
 }

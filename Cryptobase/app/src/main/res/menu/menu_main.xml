@@ -5,4 +5,9 @@
         android:title="Database">
 
     </item>
+    <item
+        android:id="@+id/qrcode_menu_button"
+        android:title="QRCODE">
+
+    </item>
 </menu>

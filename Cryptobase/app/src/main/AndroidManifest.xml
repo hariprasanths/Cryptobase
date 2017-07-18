@@ -34,6 +34,8 @@
             android:name=".data.PassDataProvider"
             android:authorities="com.example.android.cryptobase"
             android:exported="false" />
+
+        <activity android:name=".QR_code_generation"></activity>
     </application>
 
 </manifest>

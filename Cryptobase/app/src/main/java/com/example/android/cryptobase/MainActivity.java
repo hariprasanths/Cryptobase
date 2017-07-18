@@ -45,6 +45,11 @@ public class MainActivity extends AppCompatActivity {
             case R.id.database_menu_button:
                 Intent intent = new Intent(MainActivity.this,Database.class);
                 startActivity(intent);
+                break;
+            case R.id.qrcode_menu_button:
+                Intent intent1 = new Intent(MainActivity.this,QR_code_generation.class);
+                startActivity(intent1);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
