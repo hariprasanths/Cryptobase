@@ -6,6 +6,7 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -18,6 +19,20 @@ import android.widget.Toast;
 
 import com.example.android.cryptobase.data.PassDataContract;
 import com.example.android.cryptobase.data.PassDataContract.PassDataEntry;
+import com.example.android.cryptobase.firebase_data.PassDataForUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+
+import java.io.ByteArrayOutputStream;
+
+import static com.example.android.cryptobase.QR_code_generation.QRcodeWidth;
 
 public class NewEntryActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -25,6 +40,9 @@ public class NewEntryActivity extends AppCompatActivity implements LoaderManager
     EditText passWordInputBox;
     Uri currentUri;
     String passwordText;
+    private DatabaseReference mFirebaseDatabase;
+    private FirebaseDatabase mFirebaseInstance;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +50,8 @@ public class NewEntryActivity extends AppCompatActivity implements LoaderManager
         setContentView(R.layout.activity_new_entry);
         userNameInputBox = (EditText) findViewById(R.id.username_inpubox);
         passWordInputBox = (EditText) findViewById(R.id.password_inputbox);
+
+        mFirebaseInstance = FirebaseDatabase.getInstance();
 
         final Intent intent = getIntent();
         currentUri = intent.getData();
@@ -83,14 +103,22 @@ public class NewEntryActivity extends AppCompatActivity implements LoaderManager
                     Toast.makeText(getApplicationContext(), "Enter the details first!!", Toast.LENGTH_SHORT).show();
                 else {
 
+
                     ContentValues values = new ContentValues();
                     values.put(PassDataEntry.COLUMN_USERNAME, userName);
                     values.put(PassDataEntry.COLUMN_PASSWORD, passWord);
-
+                    /*try
+                    {
+                        values.put(PassDataEntry.COLUMN_PASSWORD_QRCODE,getBytes(TextToImageEncode(passWord)));
+                    }catch(WriterException e)
+                    {
+                    }*/
                     if (currentUri == null) {
                         getContentResolver().insert(PassDataContract.CONTENT_URI, values);
+                        createUser(userName,passWord);
                     } else {
                         getContentResolver().update(currentUri, values, null, null);
+                        updateUser(userName,passWord);
                     }
                     finish();
                 }
@@ -147,6 +175,90 @@ public class NewEntryActivity extends AppCompatActivity implements LoaderManager
     public void onLoaderReset(Loader<Cursor> loader) {
         userNameInputBox.setText("");
         passWordInputBox.setText("");
+    }
+
+    public static byte[] getBytes(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
+        return stream.toByteArray();
+    }
+
+    private Bitmap TextToImageEncode(String text) throws WriterException
+    {
+        BitMatrix bitMatrix;
+        try {
+            bitMatrix = new MultiFormatWriter().encode(
+                    text,
+                    BarcodeFormat.DATA_MATRIX.QR_CODE,
+                    QRcodeWidth, QRcodeWidth, null
+            );
+
+        } catch (IllegalArgumentException Illegalargumentexception) {
+
+            return null;
+        }
+        int bitMatrixWidth = bitMatrix.getWidth();
+
+        int bitMatrixHeight = bitMatrix.getHeight();
+
+        int[] pixels = new int[bitMatrixWidth * bitMatrixHeight];
+
+        for (int y = 0; y < bitMatrixHeight; y++) {
+            int offset = y * bitMatrixWidth;
+
+            for (int x = 0; x < bitMatrixWidth; x++) {
+
+                pixels[offset + x] = bitMatrix.get(x, y) ?
+                        getResources().getColor(R.color.qrCodeBlack):getResources().getColor(R.color.qrCodeWhite);
+            }
+        }
+        Bitmap bitmap = Bitmap.createBitmap(bitMatrixWidth, bitMatrixHeight, Bitmap.Config.ARGB_4444);
+
+        bitmap.setPixels(pixels, 0, 500, 0, 0, bitMatrixWidth, bitMatrixHeight);
+        return bitmap;
+    }
+
+    private void createUser(String name, String email) {
+        // TODO
+        // In real apps this userId should be fetched
+        // by implementing firebase auth
+        if (TextUtils.isEmpty(userId)) {
+            userId = mFirebaseDatabase.push().getKey();
+        }
+
+        PassDataForUser data = new PassDataForUser(name, email);
+
+        mFirebaseDatabase.child(userId).setValue(data);
+
+        addUserChangeListener();
+    }
+
+    private void addUserChangeListener() {
+
+        mFirebaseDatabase.child(userId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                PassDataForUser data = dataSnapshot.getValue(PassDataForUser.class);
+
+                if (data == null) {
+                    return;
+                }
+
+                Toast.makeText(getApplicationContext(),"Username" + data.userName + "\nPassword" + data.passWord,Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+            }
+        });
+    }
+
+    private void updateUser(String username, String password) {
+        if (!TextUtils.isEmpty(username))
+            mFirebaseDatabase.child(userId).child("username").setValue(username);
+
+        if (!TextUtils.isEmpty(password))
+            mFirebaseDatabase.child(userId).child("password").setValue(password);
     }
 
 }

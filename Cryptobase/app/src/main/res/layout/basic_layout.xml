@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.android.cryptobase.MainActivity">
+    tools:context="com.example.android.cryptobase.MainActivity"
+    android:background="@drawable/maze_pic_background">
 
     <Button
         android:layout_width="wrap_content"

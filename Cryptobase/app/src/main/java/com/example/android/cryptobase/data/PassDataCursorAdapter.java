@@ -48,9 +48,12 @@ public class PassDataCursorAdapter extends CursorAdapter {
 
         int usernameColumnIndex = cursor.getColumnIndex(PassDataContract.PassDataEntry.COLUMN_USERNAME);
         int passwordColumnIndex = cursor.getColumnIndex(PassDataContract.PassDataEntry.COLUMN_PASSWORD);
+        //int passwordQrCodeIndex = cursor.getColumnIndex(PassDataContract.PassDataEntry.COLUMN_PASSWORD_QRCODE);
 
         String username = cursor.getString(usernameColumnIndex);
         String password = cursor.getString(passwordColumnIndex);
+       /* byte[] passwordQrCodeByte = cursor.getBlob(passwordQrCodeIndex);
+        passwordQrCodeImageView.setImageBitmap(getImage(passwordQrCodeByte));*/
         try
         {
             Bitmap passwordQrCodeBitmapImg = TextToImageEncode(password);
@@ -61,8 +64,6 @@ public class PassDataCursorAdapter extends CursorAdapter {
         }
         usernameTextView.setText(username);
         passwordTextView.setText(password);
-
-
     }
 
     public static byte[] getBytes(Bitmap bitmap) {

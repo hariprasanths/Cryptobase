@@ -26,8 +26,8 @@ public class PassDataDbHelper extends SQLiteOpenHelper {
         String SQL_CREATE_TABLE = "CREATE TABLE " + PassDataEntry.TABLE_NAME + " ("
                 + PassDataEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + PassDataEntry.COLUMN_USERNAME + " TEXT, "
-                + PassDataEntry.COLUMN_PASSWORD + " TEXT);";
-                //+ PassDataEntry.COLUMN_PASSWORD_QRCODE + " BLOB);";
+                + PassDataEntry.COLUMN_PASSWORD + " TEXT, "
+                + PassDataEntry.COLUMN_PASSWORD_QRCODE + " BLOB);";
         db.execSQL(SQL_CREATE_TABLE);
 
     }

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "380686181261",
+    "firebase_url": "https://cryptobase-41726.firebaseio.com",
+    "project_id": "cryptobase-41726",
+    "storage_bucket": "cryptobase-41726.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:380686181261:android:b9276e0dc0d88d14",
+        "android_client_info": {
+          "package_name": "com.example.android.cryptobase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "380686181261-mv55o4khu4usd6kofgv95qp83jivuh5h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrbzTOqf86w6qyHLdLMqYi-4bvUY5KpAE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
